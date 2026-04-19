@@ -1,0 +1,45 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Kvalik2Proj.ViewModels"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="680"
+             x:Class="Kvalik2Proj.Views.MasterBindingView"
+             x:DataType="vm:MasterBindingViewModel">
+
+    <Grid Margin="30,20" RowDefinitions="Auto,Auto,*,Auto">
+
+        <TextBlock Grid.Row="0" Text="Привязка мастеров к услугам"
+                   FontSize="22" FontWeight="Bold" Margin="0,0,0,15"/>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="15" Margin="0,0,0,15">
+            <TextBlock Text="Мастер:" VerticalAlignment="Center" FontSize="14"/>
+            <ComboBox ItemsSource="{Binding Masters}"
+                      SelectedItem="{Binding SelectedMaster}"
+                      Width="300" FontSize="14"/>
+        </StackPanel>
+        <Border Grid.Row="2" Background="White" CornerRadius="8"
+                BorderBrush="#DDD" BorderThickness="1" Padding="10">
+            <ScrollViewer>
+                <ItemsControl ItemsSource="{Binding ServiceBindings}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="vm:ServiceBindingItem">
+                            <Border Padding="10,8" Margin="0,2"
+                                    Background="#FAFAFA" CornerRadius="4"
+                                    BorderBrush="#EEE" BorderThickness="1">
+                                <CheckBox IsChecked="{Binding IsLinked}"
+                                          Content="{Binding ServiceName}"
+                                          FontSize="14"/>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Border>
+
+        <Button Grid.Row="3" Content="← Назад" 
+                Command="{Binding BackCommand}"
+                Margin="0,15,0,0" Padding="15,8" FontSize="14"/>
+    </Grid>
+
+</UserControl>
+

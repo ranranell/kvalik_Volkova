@@ -1,0 +1,88 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Kvalik2Proj.ViewModels"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="680"
+             x:Class="Kvalik2Proj.Views.MasterPanelView"
+             x:DataType="vm:MasterPanelViewModel">
+
+    <Grid Margin="30,20" RowDefinitions="Auto,Auto,Auto,*,Auto">
+
+        <TextBlock Grid.Row="0" FontSize="22" FontWeight="Bold" Margin="0,0,0,15">
+            <Run Text="Панель мастера — "/>
+            <Run Text="{Binding MasterName}"/>
+        </TextBlock>
+        <Button Grid.Row="1" Content="Повышение квалификации" 
+                Command="{Binding NavigateToQualificationRequestCommand}"
+                Background="#2D2D2D" Foreground="White"
+                Padding="16,8" FontSize="14" CornerRadius="4"
+                HorizontalAlignment="Left" Margin="0,0,0,15"/>
+
+        <Border Grid.Row="2" Background="White" CornerRadius="8"
+                BorderBrush="#DDD" BorderThickness="1" Padding="15,10" Margin="0,0,0,15">
+            <StackPanel>
+                <TextBlock Text="Мои услуги:" FontWeight="SemiBold" FontSize="15" Margin="0,0,0,8"/>
+                <ItemsControl ItemsSource="{Binding LinkedServices}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}" FontSize="13" Margin="10,2"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <TextBlock Text="Нет привязанных услуг" FontSize="13" Foreground="Black"
+                           IsVisible="{Binding !LinkedServices.Count}"/>
+            </StackPanel>
+        </Border>
+        <Border Grid.Row="3" Background="White" CornerRadius="8"
+                BorderBrush="#DDD" BorderThickness="1">
+            <Grid RowDefinitions="Auto,*">
+                <Border Grid.Row="0" Background="#E8E8E8" Padding="10,8">
+                    <Grid ColumnDefinitions="*,*,120,60,140">
+                        <TextBlock Grid.Column="0" Text="Клиент" FontWeight="Bold" FontSize="13"/>
+                        <TextBlock Grid.Column="1" Text="Услуга" FontWeight="Bold" FontSize="13"/>
+                        <TextBlock Grid.Column="2" Text="Дата" FontWeight="Bold" FontSize="13"/>
+                        <TextBlock Grid.Column="3" Text="№" FontWeight="Bold" FontSize="13"/>
+                        <TextBlock Grid.Column="4" Text="Статус" FontWeight="Bold" FontSize="13"/>
+                    </Grid>
+                </Border>
+
+                <ScrollViewer Grid.Row="1">
+                    <ItemsControl ItemsSource="{Binding Appointments}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="vm:MasterAppointmentItem">
+                                <Border Padding="10,6" BorderBrush="#EEE" BorderThickness="0,0,0,1">
+                                    <Grid ColumnDefinitions="*,*,120,60,140">
+                                        <TextBlock Grid.Column="0" Text="{Binding ClientName}" 
+                                                   VerticalAlignment="Center" FontSize="13"/>
+                                        <TextBlock Grid.Column="1" Text="{Binding ServiceName}" 
+                                                   VerticalAlignment="Center" FontSize="13"/>
+                                        <TextBlock Grid.Column="2" Text="{Binding Date}" 
+                                                   VerticalAlignment="Center" FontSize="13"/>
+                                        <TextBlock Grid.Column="3" Text="{Binding QueueNumber}" 
+                                                   VerticalAlignment="Center" FontSize="13"/>
+                                        <ComboBox Grid.Column="4" 
+                                                  ItemsSource="{Binding StatusOptions}"
+                                                  SelectedItem="{Binding Status}"
+                                                  FontSize="12" Width="130"
+                                                  VerticalAlignment="Center"/>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Grid>
+        </Border>
+        <StackPanel Grid.Row="4" Orientation="Horizontal" 
+                    HorizontalAlignment="Center" Margin="0,10,0,0" Spacing="15">
+            <Button Content="← Назад" Command="{Binding PreviousPageCommand}"
+                    Padding="12,6" FontSize="13"/>
+            <TextBlock Text="{Binding PageInfo}" VerticalAlignment="Center" FontSize="14"/>
+            <Button Content="Вперёд →" Command="{Binding NextPageCommand}"
+                    Padding="12,6" FontSize="13"/>
+        </StackPanel>
+    </Grid>
+
+</UserControl>
+

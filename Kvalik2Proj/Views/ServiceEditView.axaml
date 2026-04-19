@@ -1,0 +1,88 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Kvalik2Proj.ViewModels"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="680"
+             x:Class="Kvalik2Proj.Views.ServiceEditView"
+             x:DataType="vm:ServiceEditViewModel">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+    <Border Background="#F5F5F5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <Border Background="White" CornerRadius="12" Padding="40"
+                Width="500"
+                HorizontalAlignment="Center" VerticalAlignment="Center"
+                BoxShadow="0 2 10 0 #30000000"
+                Margin="0,20">
+            <StackPanel Spacing="12" VerticalAlignment="Center">
+                
+                <TextBlock Text="{Binding Title}" FontSize="22" FontWeight="Bold" 
+                           HorizontalAlignment="Center" Margin="0,0,0,15"/>
+
+                <TextBlock Text="Название" FontSize="14" Margin="0,0,0,2"/>
+                <TextBox Text="{Binding Name}" Watermark="Введите название" Padding="10,8"/>
+
+                <TextBlock Text="Описание" FontSize="14" Margin="0,5,0,2"/>
+                <TextBox Text="{Binding Description}" Watermark="Введите описание" 
+                         AcceptsReturn="True" TextWrapping="Wrap" Height="80" Padding="10,8"/>
+
+                <TextBlock Text="Цена" FontSize="14" Margin="0,5,0,2"/>
+                <TextBox Text="{Binding Price}" Watermark="0.00" Padding="10,8"/>
+
+                <TextBlock Text="Категория (коллекция)" FontSize="14" Margin="0,5,0,2"/>
+                <ComboBox ItemsSource="{Binding Categories}" 
+                          SelectedItem="{Binding SelectedCategory}"
+                          HorizontalAlignment="Stretch" Padding="8,6" FontSize="13">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+
+                <TextBlock Text="Тип услуги" FontSize="14" Margin="0,5,0,2"/>
+                <ComboBox ItemsSource="{Binding TypeOptions}"
+                          SelectedItem="{Binding SelectedType}"
+                          HorizontalAlignment="Stretch" Padding="8,6" FontSize="13"/>
+
+                <TextBlock Text="Фотография" FontSize="14" Margin="0,5,0,2"/>
+                <Grid ColumnDefinitions="*,Auto" Margin="0,0,0,0">
+                    <TextBlock Grid.Column="0" Text="{Binding ImagePath}" 
+                               FontSize="11" VerticalAlignment="Center"
+                               Foreground="#888" TextTrimming="CharacterEllipsis"/>
+                    <Button Grid.Column="1" Content="Выбрать фото" 
+                            Command="{Binding PickImageCommand}"
+                            Padding="10,6" FontSize="12" Margin="10,0,0,0"/>
+                </Grid>
+                <Border Background="#EEE" CornerRadius="4" Height="120" Width="160"
+                        HorizontalAlignment="Left" ClipToBounds="True" Margin="0,5,0,0"
+                        IsVisible="{Binding ImagePreview, Converter={x:Static ObjectConverters.IsNotNull}}">
+                    <Image Source="{Binding ImagePreview}" Stretch="UniformToFill"
+                           Width="160" Height="120"/>
+                </Border>
+                <TextBlock Text="{Binding ErrorMessage}" Foreground="Red" 
+                           FontSize="12" HorizontalAlignment="Center"
+                           IsVisible="{Binding ErrorMessage, 
+                           Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+                <TextBlock Text="{Binding SuccessMessage}" Foreground="Green" 
+                           FontSize="12" HorizontalAlignment="Center"
+                           IsVisible="{Binding SuccessMessage, 
+                           Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+
+                <Grid ColumnDefinitions="*,*" Margin="0,15,0,0">
+                    <Button Grid.Column="0" Content="Сохранить" Command="{Binding SaveCommand}"
+                            HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"
+                            Padding="10,10" FontSize="15" Margin="0,0,5,0"
+                            Background="#2D2D2D" Foreground="White"/>
+                    <Button Grid.Column="1" Content="Отмена" Command="{Binding CancelCommand}"
+                            HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"
+                            Padding="10,10" FontSize="15" Margin="5,0,0,0"
+                            Background="Transparent" Foreground="#2D2D2D"
+                            BorderBrush="#CCC" BorderThickness="1"/>
+                </Grid>
+            </StackPanel>
+        </Border>
+    </Border>
+    </ScrollViewer>
+</UserControl>
+

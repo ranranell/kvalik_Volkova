@@ -1,0 +1,84 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Kvalik2Proj.ViewModels"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="680"
+             x:Class="Kvalik2Proj.Views.ReviewCreateView"
+             x:DataType="vm:ReviewCreateViewModel">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+    <Border Background="#F5F5F5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <Border Background="White" CornerRadius="12" Padding="40"
+                Width="500"
+                HorizontalAlignment="Center" VerticalAlignment="Center"
+                BoxShadow="0 2 10 0 #30000000"
+                Margin="0,20">
+            <StackPanel Spacing="12" VerticalAlignment="Center">
+
+                <TextBlock Text="Написать отзыв" FontSize="22" FontWeight="Bold"
+                           HorizontalAlignment="Center" Margin="0,0,0,10"/>
+
+                <TextBlock Text="Услуга (необязательно)" FontSize="14" Margin="0,0,0,2"/>
+                <ComboBox ItemsSource="{Binding ServicesList}"
+                          SelectedItem="{Binding SelectedService}"
+                          PlaceholderText="Выберите услугу"
+                          HorizontalAlignment="Stretch" Padding="8,6" FontSize="13">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+
+                <TextBlock Text="Мастер (необязательно)" FontSize="14" Margin="0,5,0,2"/>
+                <ComboBox ItemsSource="{Binding MastersList}"
+                          SelectedItem="{Binding SelectedMaster}"
+                          PlaceholderText="Выберите мастера"
+                          HorizontalAlignment="Stretch" Padding="8,6" FontSize="13">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+
+                <TextBlock Text="Оценка" FontSize="14" Margin="0,5,0,2"/>
+                <ComboBox ItemsSource="{Binding RatingOptions}"
+                          SelectedItem="{Binding Rating}"
+                          HorizontalAlignment="Stretch" Padding="8,6" FontSize="13"/>
+
+                <TextBlock Text="Комментарий" FontSize="14" Margin="0,5,0,2"/>
+                <TextBox Text="{Binding Comment}" Watermark="Ваш отзыв..."
+                         AcceptsReturn="True" TextWrapping="Wrap" Height="80" Padding="10,8"/>
+                <TextBlock Text="{Binding ErrorMessage}" Foreground="Red"
+                           FontSize="12" HorizontalAlignment="Center"
+                           IsVisible="{Binding ErrorMessage,
+                           Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+                <TextBlock Text="{Binding SuccessMessage}" Foreground="Green"
+                           FontSize="13" HorizontalAlignment="Center" FontWeight="SemiBold"
+                           IsVisible="{Binding SuccessMessage,
+                           Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+
+                <Grid ColumnDefinitions="*,*,*" Margin="0,12,0,0">
+                    <Button Grid.Column="0" Content="Отправить" Command="{Binding SubmitCommand}"
+                            HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"
+                            Padding="10,10" FontSize="14" Margin="0,0,4,0"
+                            Background="#2D2D2D" Foreground="White"/>
+                    <Button Grid.Column="1" Content="Все отзывы" Command="{Binding GoToListCommand}"
+                            HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"
+                            Padding="10,10" FontSize="14" Margin="4,0,4,0"
+                            Background="Transparent" Foreground="#2D2D2D"
+                            BorderBrush="#CCC" BorderThickness="1"/>
+                    <Button Grid.Column="2" Content="Назад" Command="{Binding GoBackCommand}"
+                            HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"
+                            Padding="10,10" FontSize="14" Margin="4,0,0,0"
+                            Background="Transparent" Foreground="#2D2D2D"
+                            BorderBrush="#CCC" BorderThickness="1"/>
+                </Grid>
+            </StackPanel>
+        </Border>
+    </Border>
+    </ScrollViewer>
+</UserControl>
+

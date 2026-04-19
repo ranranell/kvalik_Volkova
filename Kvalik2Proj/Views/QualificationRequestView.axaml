@@ -1,0 +1,100 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Kvalik2Proj.ViewModels"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="680"
+             x:Class="Kvalik2Proj.Views.QualificationRequestView"
+             x:DataType="vm:QualificationRequestViewModel">
+
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="30,20" Spacing="15">
+
+            <TextBlock Text="Повышение квалификации" FontSize="22" FontWeight="Bold"/>
+
+            <!-- Форма подачи заявки -->
+            <Border Background="White" CornerRadius="8" BorderBrush="#DDD" BorderThickness="1" Padding="20">
+                <StackPanel Spacing="10">
+                    <TextBlock Text="Подать заявку" FontWeight="SemiBold" FontSize="16"/>
+                    <TextBlock Text="Опишите, какое повышение квалификации вы хотите пройти:" FontSize="13" Foreground="#666"/>
+                    <TextBox Text="{Binding Description}" 
+                             Watermark="Описание заявки..."
+                             AcceptsReturn="True" TextWrapping="Wrap"
+                             Height="80" FontSize="13"/>
+
+                    <TextBlock Text="{Binding ErrorMessage}" Foreground="Red" FontSize="13"
+                               IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+                    <TextBlock Text="{Binding SuccessMessage}" Foreground="Green" FontSize="13"
+                               IsVisible="{Binding SuccessMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <Button Content="Подать заявку" Command="{Binding SubmitCommand}"
+                                Background="#2D2D2D" Foreground="White"
+                                Padding="16,8" FontSize="13" CornerRadius="4"/>
+                        <Button Content="Назад в кабинет" Command="{Binding GoBackCommand}"
+                                Padding="16,8" FontSize="13" CornerRadius="4"
+                                BorderBrush="#2D2D2D" BorderThickness="1"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- История заявок -->
+            <TextBlock Text="История заявок" FontWeight="SemiBold" FontSize="16" Margin="0,5,0,0"/>
+
+            <Border Background="White" CornerRadius="8" BorderBrush="#DDD" BorderThickness="1">
+                <Grid RowDefinitions="Auto,*">
+                    <Border Grid.Row="0" Background="#E8E8E8" Padding="10,8">
+                        <Grid ColumnDefinitions="*,2*,100,120,120">
+                            <TextBlock Grid.Column="0" Text="Дата" FontWeight="Bold" FontSize="13"/>
+                            <TextBlock Grid.Column="1" Text="Описание" FontWeight="Bold" FontSize="13"/>
+                            <TextBlock Grid.Column="2" Text="Статус" FontWeight="Bold" FontSize="13"/>
+                            <TextBlock Grid.Column="3" Text="Рассмотрено" FontWeight="Bold" FontSize="13"/>
+                            <TextBlock Grid.Column="4" Text="Комментарий" FontWeight="Bold" FontSize="13"/>
+                        </Grid>
+                    </Border>
+
+                    <ItemsControl Grid.Row="1" ItemsSource="{Binding Requests}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="vm:QualRequestItem">
+                                <Border Padding="10,8" BorderBrush="#EEE" BorderThickness="0,0,0,1">
+                                    <Grid ColumnDefinitions="*,2*,100,120,120">
+                                        <TextBlock Grid.Column="0" Text="{Binding CreatedAt}" 
+                                                   VerticalAlignment="Center" FontSize="12"/>
+                                        <TextBlock Grid.Column="1" Text="{Binding Description}" 
+                                                   VerticalAlignment="Center" FontSize="12"
+                                                   TextWrapping="Wrap"/>
+                                        <Border Grid.Column="2" VerticalAlignment="Center"
+                                                CornerRadius="4" Padding="6,2"
+                                                HorizontalAlignment="Left">
+                                            <TextBlock Text="{Binding Status}" FontSize="12" FontWeight="SemiBold"/>
+                                        </Border>
+                                        <TextBlock Grid.Column="3" Text="{Binding ReviewedAt}" 
+                                                   VerticalAlignment="Center" FontSize="12"/>
+                                        <TextBlock Grid.Column="4" Text="{Binding ReviewComment}" 
+                                                   VerticalAlignment="Center" FontSize="12"
+                                                   TextWrapping="Wrap"/>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Grid>
+            </Border>
+
+            <TextBlock Text="Нет заявок" FontSize="13" Foreground="#999"
+                       HorizontalAlignment="Center"
+                       IsVisible="{Binding !Requests.Count}"/>
+
+            <!-- Пагинация -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="15">
+                <Button Content="← Назад" Command="{Binding PreviousPageCommand}"
+                        Padding="12,6" FontSize="13"/>
+                <TextBlock Text="{Binding PageInfo}" VerticalAlignment="Center" FontSize="14"/>
+                <Button Content="Вперёд →" Command="{Binding NextPageCommand}"
+                        Padding="12,6" FontSize="13"/>
+            </StackPanel>
+
+        </StackPanel>
+    </ScrollViewer>
+
+</UserControl>

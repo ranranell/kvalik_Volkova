@@ -1,0 +1,25 @@
+﻿<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="Kvalik2Proj.App"
+             xmlns:local="using:Kvalik2Proj"
+             RequestedThemeVariant="Default">
+    <Application.DataTemplates>
+        <local:ViewLocator/>
+    </Application.DataTemplates>
+  
+    <Application.Styles>
+        <FluentTheme />
+        <Style Selector="TextBlock">
+            <Setter Property="Foreground" Value="Black"/>
+        </Style>
+        <Style Selector="TextBox">
+            <Setter Property="Foreground" Value="Black"/>
+        </Style>
+        <Style Selector="ComboBox">
+            <Setter Property="Foreground" Value="Black"/>
+        </Style>
+        <Style Selector="CheckBox">
+            <Setter Property="Foreground" Value="Black"/>
+        </Style>
+    </Application.Styles>
+</Application>

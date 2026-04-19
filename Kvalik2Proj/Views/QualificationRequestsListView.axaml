@@ -1,0 +1,101 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Kvalik2Proj.ViewModels"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="680"
+             x:Class="Kvalik2Proj.Views.QualificationRequestsListView"
+             x:DataType="vm:QualificationRequestsListViewModel">
+
+    <Grid Margin="30,20" RowDefinitions="Auto,Auto,*,Auto">
+
+        <TextBlock Grid.Row="0" Text="Заявки на повышение квалификации" 
+                   FontSize="22" FontWeight="Bold" Margin="0,0,0,15"/>
+
+        <!-- Фильтр -->
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="10" Margin="0,0,0,15">
+            <TextBlock Text="Фильтр:" VerticalAlignment="Center" FontSize="14"/>
+            <ComboBox ItemsSource="{Binding FilterOptions}" 
+                      SelectedItem="{Binding SelectedFilter}"
+                      Width="160" FontSize="13"/>
+        </StackPanel>
+
+        <!-- Таблица заявок -->
+        <Border Grid.Row="2" Background="White" CornerRadius="8"
+                BorderBrush="#DDD" BorderThickness="1">
+            <Grid RowDefinitions="Auto,*">
+                <Border Grid.Row="0" Background="#E8E8E8" Padding="10,8">
+                    <Grid ColumnDefinitions="120,2*,90,100,2*">
+                        <TextBlock Grid.Column="0" Text="Мастер" FontWeight="Bold" FontSize="13"/>
+                        <TextBlock Grid.Column="1" Text="Описание" FontWeight="Bold" FontSize="13"/>
+                        <TextBlock Grid.Column="2" Text="Статус" FontWeight="Bold" FontSize="13"/>
+                        <TextBlock Grid.Column="3" Text="Дата" FontWeight="Bold" FontSize="13"/>
+                        <TextBlock Grid.Column="4" Text="Действия" FontWeight="Bold" FontSize="13"/>
+                    </Grid>
+                </Border>
+
+                <ScrollViewer Grid.Row="1">
+                    <ItemsControl ItemsSource="{Binding Requests}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="vm:QualRequestListItem">
+                                <Border Padding="10,8" BorderBrush="#EEE" BorderThickness="0,0,0,1">
+                                    <Grid ColumnDefinitions="120,2*,90,100,2*" RowDefinitions="Auto,Auto">
+                                        <TextBlock Grid.Column="0" Grid.Row="0" Text="{Binding MasterName}" 
+                                                   VerticalAlignment="Center" FontSize="13"/>
+                                        <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Description}" 
+                                                   VerticalAlignment="Center" FontSize="12"
+                                                   TextWrapping="Wrap" MaxWidth="250"/>
+                                        <TextBlock Grid.Column="2" Grid.Row="0" Text="{Binding Status}" 
+                                                   VerticalAlignment="Center" FontSize="12" FontWeight="SemiBold"/>
+                                        <TextBlock Grid.Column="3" Grid.Row="0" Text="{Binding CreatedAt}" 
+                                                   VerticalAlignment="Center" FontSize="12"/>
+
+                                        <!-- Действия для ожидающих заявок -->
+                                        <StackPanel Grid.Column="4" Grid.Row="0" Grid.RowSpan="2"
+                                                    IsVisible="{Binding IsPending}"
+                                                    Spacing="5" VerticalAlignment="Center">
+                                            <Button Content="Одобрить" Command="{Binding ApproveCommand}"
+                                                    Background="#4CAF50" Foreground="White"
+                                                    Padding="10,4" FontSize="12" CornerRadius="4"
+                                                    HorizontalAlignment="Left"/>
+                                            <StackPanel Orientation="Horizontal" Spacing="5">
+                                                <TextBox Text="{Binding RejectComment}" 
+                                                         Watermark="Причина отклонения..."
+                                                         Width="150" FontSize="11" Height="28"/>
+                                                <Button Content="Отклонить" Command="{Binding RejectCommand}"
+                                                        Background="#F44336" Foreground="White"
+                                                        Padding="10,4" FontSize="12" CornerRadius="4"/>
+                                            </StackPanel>
+                                        </StackPanel>
+
+                                        <!-- Отображение комментария для рассмотренных -->
+                                        <TextBlock Grid.Column="4" Grid.Row="0"
+                                                   IsVisible="{Binding !IsPending}"
+                                                   Text="{Binding ReviewComment}" 
+                                                   VerticalAlignment="Center" FontSize="12"
+                                                   Foreground="#666" TextWrapping="Wrap" MaxWidth="200"/>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Grid>
+        </Border>
+
+        <TextBlock Text="Нет заявок" FontSize="13" Foreground="#999"
+                   HorizontalAlignment="Center" Margin="0,10"
+                   IsVisible="{Binding !Requests.Count}"/>
+
+        <!-- Пагинация -->
+        <StackPanel Grid.Row="3" Orientation="Horizontal" 
+                    HorizontalAlignment="Center" Margin="0,10,0,0" Spacing="15">
+            <Button Content="← Назад" Command="{Binding PreviousPageCommand}"
+                    Padding="12,6" FontSize="13"/>
+            <TextBlock Text="{Binding PageInfo}" VerticalAlignment="Center" FontSize="14"/>
+            <Button Content="Вперёд →" Command="{Binding NextPageCommand}"
+                    Padding="12,6" FontSize="13"/>
+        </StackPanel>
+    </Grid>
+
+</UserControl>
